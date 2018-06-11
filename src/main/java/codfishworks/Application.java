@@ -1,5 +1,7 @@
 package codfishworks;
 
+import java.util.function.Consumer;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +33,12 @@ public class Application {
     public Mono<ServerResponse> addSpans(ServerRequest serverRequest) {
         Mono<String> arrayListFlux = serverRequest.bodyToMono(String.class);
 
-        arrayListFlux.subscribe(System.out::println);
+        arrayListFlux.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String it) {
+                System.out.println(it);
+            }
+        });
 
         return ServerResponse.ok().contentType(MediaType.TEXT_PLAIN)
                 .body(BodyInserters.fromObject("Hello!"));
